@@ -281,10 +281,10 @@
         });
 
         if (!this[0]) {
-            me = $('<div/>').css(opt.boxCSS).appendTo(body);
+            me = $('<div/>').appendTo(body);
         }
 
-        me.addClass(opt.boxClass).hide().data('option', opt);
+        me.addClass(opt.boxClass).css(opt.boxCSS).hide().data('option', opt);
 
         if (!isInited) {
             face = createFace(opt);
