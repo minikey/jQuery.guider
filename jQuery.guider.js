@@ -1,4 +1,4 @@
-;(function($) {
+!(function($) {
     var defOpt = {
             coverId: 'guide-cover',
             boxClass: 'guide-box',
@@ -134,11 +134,12 @@
                 left: 0,
                 top: 0
             },
+            pOffset = ele.offsetParent().offset(),
             position = isFixed ? 'fixed' : 'absolute',
-            top = (isFixed ? offset.top - $(window).scrollTop() : offset.top) - bsize + (layout && layout.top ? layout.top : 0),
-            left = offset.left - bsize + (layout && layout.left ? layout.left : 0),
-            width = ele.width() + bsize,
-            height = ele.height() + bsize,
+            top = (isFixed ? offset.top - $(window).scrollTop() : offset.top) - bsize + (layout && layout.top ? layout.top : 0) - pOffset.top,
+            left = offset.left - bsize + (layout && layout.left ? layout.left : 0) - pOffset.left,
+            width = ele.outerWidth() + bsize,
+            height = ele.outerHeight() + bsize,
             rect = {
                 'position': position,
                 'width': width + 'px',
@@ -146,6 +147,10 @@
                 'left': left + 'px',
                 'top': top + 'px'
             };
+
+        // #1 处理特殊
+        var op = ele.offsetParent();
+
 
         if (left < 0) {
             rect.width = width + left + 'px';
@@ -232,9 +237,9 @@
             var tmp = this.baseDom.data('_tmp');
             tmp && tmp.css('z-index', tmp.data('zIndex'));
             this.baseDom.data('_step', null);
-            this.next();
             face.hide();
             bg.hide();
+            this.next();
             return this;
         },
         title: function(html) {
