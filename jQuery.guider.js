@@ -148,10 +148,6 @@
                 'top': top + 'px'
             };
 
-        // #1 处理特殊
-        var op = ele.offsetParent();
-
-
         if (left < 0) {
             rect.width = width + left + 'px';
             rect.left = 0;
