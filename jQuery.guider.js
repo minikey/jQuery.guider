@@ -307,6 +307,6 @@
         return me;
     }
 
-    $.fn.guider = init;
+    $.guider = init;
 
 })(jQuery);
