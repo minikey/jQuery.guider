@@ -121,7 +121,7 @@
             .data('_maxStep', 0);
     }
 
-    function addCoverTo(ele, isFixed, layout, pos, bsize) {
+    function addCoverTo(ele, isFixed, layout, pos, bsize, isCustom) {
     	if(!ele) {
     		cover.show();
     		face.hide();
@@ -156,15 +156,18 @@
         bg.css(rect);
         rect.left = left + bsize + 'px';
         rect.top = top + bsize + 'px';
+
         face.css(rect);
 
-        if (pos) {
-            this.css({
-                left: pos.left + offset.left + 'px',
-                top: pos.top + offset.top + 'px'
-            });
-        } else {
-            autoLay(this);
+        if(!isCustom) { // 非自定义
+            if (pos) {
+                this.css({
+                    left: pos.left + offset.left + 'px',
+                    top: pos.top + offset.top + 'px'
+                });
+            } else {
+                autoLay(this);
+            }
         }
 
         this.show();
@@ -192,7 +195,7 @@
         if (item) {
             tmp = item.id ? $('#' + item.id) : null;
 
-            callback = opt.eachFun && opt.eachFun.call(this, cur);
+            callback = opt.eachBefore && opt.eachBefore.call(this, cur);
 
             if (callback === false) {
                 this._tmp = null;
@@ -218,7 +221,8 @@
                 .data('_step', cur)
                 .data('_tmp', tmp)
                 .data('_maxStep', maxStep);
-            addCoverTo.call(this, tmp, item.fixed, item.layout, item.position, item.spaceSize || opt.spaceSize);
+            addCoverTo.call(this, tmp, item.fixed, item.layout, item.position, item.spaceSize || opt.spaceSize, !!item.custom);
+            opt.eachAfter && opt.eachAfter.call(this, cur);
         } else {
             this.trigger("close");
         }
@@ -247,6 +251,7 @@
             return this;
         },
         next: function() {
+            this.baseDom.hide();
             show.call(this.baseDom, 'next');
             return this;
         },
